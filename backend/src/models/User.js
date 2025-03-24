@@ -30,26 +30,24 @@ const User = sequelize.define('User', {
   },
   phone: {
     type: DataTypes.STRING,
-    validate: {
-      is: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/
-    }
+    allowNull: true
   }
 }, {
-  hooks: {
-    beforeCreate: async (user) => {
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(user.password, salt);
-    },
-    beforeUpdate: async (user) => {
-      if (user.changed('password')) {
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(user.password, salt);
-      }
-    }
-  }
+  // Configuration supplémentaire si nécessaire
 });
 
-// Méthode pour valider le mot de passe
+// Méthode statique pour créer un utilisateur avec mot de passe haché
+User.createWithHashedPassword = async (userData) => {
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(userData.password, salt);
+ 
+  return User.create({
+    ...userData,
+    password: hashedPassword
+  });
+};
+
+// Méthode d'instance pour valider le mot de passe
 User.prototype.validatePassword = async function(password) {
   return await bcrypt.compare(password, this.password);
 };
