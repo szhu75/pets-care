@@ -21,12 +21,14 @@ const authRoutes = require('./src/routes/authRoutes');
 const appointmentRoutes = require('./src/routes/appointmentRoutes');
 const petRoutes = require('./src/routes/petRoutes');
 const adminRoutes = require('./src/routes/adminRoutes');
+const reminderRoutes = require('./src/routes/reminderRoutes'); // Nouvelles routes
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/pets', petRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/reminders', reminderRoutes); // Ajout des routes de rappel
 
 // Route de test
 app.get('/', (req, res) => {

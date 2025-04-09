@@ -4,6 +4,7 @@ import { getUserAppointments } from '../services/appointmentService';
 import PetRegistration from '../components/Pet/PetRegistration';
 import PetUpdateForm from '../components/Pet/PetUpdateForm';
 import AppointmentForm from '../components/Appointment/AppointmentForm';
+import VaccinationRemindersSection from '../components/Dashboard/VaccinationRemindersSection';
 import Navbar from '../components/Layout/Navbar';
 import Footer from '../components/Layout/Footer';
 import '../styles/index.css';
@@ -174,9 +175,9 @@ const Dashboard = () => {
                       <>
                         <div className="dashboard-pet-details">
                           <span className="dashboard-pet-name">{pet.name}</span>
-                          <span>{pet.type} - {pet.breed}</span>
+                          <span>{pet.type} - {pet.breed || 'Non précisé'}</span>
                           <span>Âge : {formatAge(pet.age)}</span>
-                          <span>Dernier vaccin : {pet.lastVaccination || 'Non renseigné'}</span>
+                          <span>Dernier vaccin : {pet.lastVaccination ? new Date(pet.lastVaccination).toLocaleDateString('fr-FR') : 'Non renseigné'}</span>
                         </div>
                         <div className="dashboard-pet-actions">
                           <button 
@@ -230,10 +231,13 @@ const Dashboard = () => {
                       <span>{appointment.type}</span>
                     </div>
                     <div>
-                      <span>{appointment.date} à {appointment.time}</span>
+                      <span>{new Date(appointment.date).toLocaleDateString('fr-FR')} à {appointment.time}</span>
                       <span className={`
                         inline-block ml-2 px-2 py-1 rounded-full text-xs
-                        ${appointment.status === 'À venir' ? 'bg-blue-100 text-blue-800' : ''}
+                        ${appointment.status === 'En cours' ? 'bg-blue-100 text-blue-800' : 
+                          appointment.status === 'Confirmé' ? 'bg-green-100 text-green-800' : 
+                          appointment.status === 'Terminé' ? 'bg-gray-100 text-gray-800' : 
+                          'bg-red-100 text-red-800'}
                       `}>
                         {appointment.status}
                       </span>
@@ -249,17 +253,16 @@ const Dashboard = () => {
         <div className="dashboard-reminders">
           <h2 className="dashboard-section-title">Rappels</h2>
           <div className="dashboard-reminders-grid">
-            <div className="dashboard-reminder-item dashboard-reminder-vaccine">
-              <h3>Vaccin de Buddy</h3>
-              <p>À faire avant le 15/09/2024</p>
-            </div>
+            <VaccinationRemindersSection />
+            
             <div className="dashboard-reminder-item dashboard-reminder-checkup">
               <h3>Contrôle annuel</h3>
-              <p>Whiskers - À programmer</p>
+              <p>Pensez au contrôle annuel pour vos animaux</p>
             </div>
+            
             <div className="dashboard-reminder-item dashboard-reminder-available">
-              <h3>Bon pour une visite</h3>
-              <p>Prochain rendez-vous disponible</p>
+              <h3>Besoin d'aide ?</h3>
+              <p>Contactez-nous pour toute question</p>
             </div>
           </div>
         </div>

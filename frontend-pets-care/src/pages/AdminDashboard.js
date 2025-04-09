@@ -4,10 +4,12 @@ import {
   getAllAppointments, 
   getAllPets
 } from '../services/adminService';
+import { getPetsNeedingVaccineReminders } from '../services/reminderService';
 
-// Importation des composants Navbar et Footer
+// Importation des composants
 import Navbar from '../components/Layout/Navbar';
 import Footer from '../components/Layout/Footer';
+import VaccinationReminders from '../components/Admin/VaccinationReminders';
 import '../styles/AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -17,9 +19,10 @@ const AdminDashboard = () => {
     totalAppointments: 0,
     pendingAppointments: 0,
     totalPets: 0,
-    totalUsers: 0
+    totalUsers: 0,
+    petsNeedingVaccination: 0  // Nouvelle statistique
   });
-  const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, appointments, pets
+  const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, appointments, pets, reminders
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -41,6 +44,9 @@ const AdminDashboard = () => {
       // Récupérer tous les animaux
       const fetchedPets = await getAllPets();
 
+      // Récupérer les animaux nécessitant un rappel de vaccination
+      const petsNeedingVaccination = await getPetsNeedingVaccineReminders();
+      
       // Mettre à jour l'état
       setAppointments(fetchedAppointments);
       setPets(fetchedPets);
@@ -50,7 +56,8 @@ const AdminDashboard = () => {
         totalAppointments: fetchedAppointments.length,
         pendingAppointments: fetchedAppointments.filter((app) => app.status === 'En cours').length,
         totalPets: fetchedPets.length,
-        totalUsers: statsData.totalUsers || 0
+        totalUsers: statsData.totalUsers || 0,
+        petsNeedingVaccination: petsNeedingVaccination.length
       });
       
       setLoading(false);
@@ -148,6 +155,12 @@ const AdminDashboard = () => {
         >
           Animaux
         </button>
+        <button
+          className={activeTab === 'reminders' ? 'active-tab' : ''}
+          onClick={() => setActiveTab('reminders')}
+        >
+          Rappels vaccins
+        </button>
       </div>
 
       {/* Tableau de bord principal */}
@@ -159,16 +172,12 @@ const AdminDashboard = () => {
               <p>{stats.totalAppointments}</p>
             </div>
             <div className="stat-card">
-              <h3>Rendez-vous en Attente</h3>
-              <p>{stats.pendingAppointments}</p>
-            </div>
-            <div className="stat-card">
               <h3>Animaux Enregistrés</h3>
               <p>{stats.totalPets}</p>
             </div>
             <div className="stat-card">
-              <h3>Utilisateurs Inscrits</h3>
-              <p>{stats.totalUsers}</p>
+              <h3>Rappels de vaccination</h3>
+              <p className={stats.petsNeedingVaccination > 0 ? 'text-orange-500' : ''}>{stats.petsNeedingVaccination}</p>
             </div>
           </div>
 
@@ -200,32 +209,21 @@ const AdminDashboard = () => {
             </div>
 
             <div className="admin-pets-section">
-              <h2>Animaux Récemment Ajoutés</h2>
-              {pets.length === 0 ? (
-                <p>Aucun animal enregistré</p>
+              <h2>Animaux nécessitant un rappel de vaccination</h2>
+              {stats.petsNeedingVaccination === 0 ? (
+                <p>Aucun animal n'a besoin d'un rappel de vaccination pour le moment.</p>
               ) : (
-                <table className="admin-pets-table">
-                  <thead>
-                    <tr>
-                      <th>Nom</th>
-                      <th>Type</th>
-                      <th>Propriétaire</th>
-                      <th>Âge</th>
-                      <th>Dernier Vaccin</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {pets.slice(0, 5).map((pet) => (
-                      <tr key={pet.id}>
-                        <td>{pet.name}</td>
-                        <td>{pet.type}</td>
-                        <td>{pet.User?.firstName || 'N/A'} {pet.User?.lastName || ''}</td>
-                        <td>{formatAge(pet.age)}</td>
-                        <td>{pet.lastVaccination ? formatDate(pet.lastVaccination) : 'Non renseigné'}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <div className="vaccination-reminder-preview">
+                  <p className="text-orange-500 font-medium">
+                    {stats.petsNeedingVaccination} animal(s) nécessitent un rappel de vaccination
+                  </p>
+                  <button 
+                    onClick={() => setActiveTab('reminders')}
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mt-3"
+                  >
+                    Voir et envoyer les rappels
+                  </button>
+                </div>
               )}
             </div>
           </div>
@@ -330,6 +328,14 @@ const AdminDashboard = () => {
               </tbody>
             </table>
           )}
+        </div>
+      )}
+      
+      {/* Section des rappels de vaccination */}
+      {activeTab === 'reminders' && (
+        <div className="admin-full-section">
+          <h2>Gestion des Rappels de Vaccination</h2>
+          <VaccinationReminders />
         </div>
       )}
 
