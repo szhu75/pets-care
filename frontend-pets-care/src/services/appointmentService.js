@@ -24,12 +24,6 @@ const statusMapping = {
   'cancelled': 'Annulé'
 };
 
-const reverseStatusMapping = {
-  'En cours': 'pending',
-  'Confirmé': 'confirmed',
-  'Terminé': 'completed',
-  'Annulé': 'cancelled'
-};
 
 // Fonction pour créer un rendez-vous
 export const createAppointment = async (appointmentData) => {

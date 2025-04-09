@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   getPetsNeedingVaccineReminders, 
   sendVaccinationReminder,
@@ -13,11 +13,7 @@ const VaccinationReminders = () => {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
 
-  useEffect(() => {
-    fetchData();
-  }, [activeTab]);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -36,7 +32,11 @@ const VaccinationReminders = () => {
       setError('Erreur lors du chargement des données. Veuillez réessayer.');
       setLoading(false);
     }
-  };
+  }, [activeTab]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleSendReminder = async (petId) => {
     try {
