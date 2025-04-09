@@ -50,39 +50,6 @@ router.get('/stats',
   }
 );
 
-// Route pour gérer les rendez-vous (confirmer, annuler)
-router.put('/appointments/:id', 
-  authMiddleware, 
-  adminMiddleware, 
-  async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { status } = req.body;
-
-      const appointment = await Appointment.findByPk(id);
-
-      if (!appointment) {
-        return res.status(404).json({ message: 'Rendez-vous non trouvé' });
-      }
-
-      // Mettre à jour le statut
-      appointment.status = status;
-      await appointment.save();
-
-      res.status(200).json({
-        message: 'Statut du rendez-vous mis à jour',
-        appointment
-      });
-    } catch (error) {
-      console.error('Erreur de mise à jour du rendez-vous :', error);
-      res.status(500).json({ 
-        message: 'Erreur lors de la mise à jour du rendez-vous',
-        error: error.message 
-      });
-    }
-  }
-);
-
 // Route pour récupérer tous les utilisateurs (admin uniquement)
 router.get('/users', 
   authMiddleware, 
@@ -137,6 +104,33 @@ router.get('/appointments',
       console.error('Erreur de récupération des rendez-vous :', error);
       res.status(500).json({ 
         message: 'Erreur lors de la récupération des rendez-vous',
+        error: error.message 
+      });
+    }
+  }
+);
+
+// Route pour récupérer tous les animaux
+router.get('/pets', 
+  authMiddleware, 
+  adminMiddleware, 
+  async (req, res) => {
+    try {
+      const pets = await Pet.findAll({
+        include: [
+          {
+            model: User,
+            attributes: ['firstName', 'lastName', 'email']
+          }
+        ],
+        order: [['createdAt', 'DESC']]
+      });
+
+      res.status(200).json(pets);
+    } catch (error) {
+      console.error('Erreur de récupération des animaux :', error);
+      res.status(500).json({ 
+        message: 'Erreur lors de la récupération des animaux',
         error: error.message 
       });
     }

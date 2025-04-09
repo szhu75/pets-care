@@ -56,24 +56,20 @@ export const getAllAppointments = async () => {
   }
 };
 
-// Fonction pour mettre à jour le statut d'un rendez-vous
-export const updateAppointmentStatus = async (appointmentId, status) => {
+// Fonction pour récupérer tous les animaux
+export const getAllPets = async () => {
   try {
     const token = localStorage.getItem('token');
     
-    const response = await axios.put(`${API_URL}/appointments/${appointmentId}`, 
-      { status },
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+    const response = await axios.get(`${API_URL}/pets`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
       }
-    );
+    });
     
     return response.data;
   } catch (error) {
-    console.error('Erreur de mise à jour du rendez-vous :', error.response?.data || error.message);
+    console.error('Erreur de récupération des animaux :', error.response?.data || error.message);
     throw error;
   }
 };
