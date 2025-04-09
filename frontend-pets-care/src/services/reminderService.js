@@ -25,7 +25,10 @@ export const sendVaccinationReminder = async (petId, reminderType = 'email') => 
   try {
     const token = localStorage.getItem('token');
     
-    const response = await axios.post(`${API_URL}/send`, 
+    console.log(`Envoi d'un rappel pour l'animal ID: ${petId} via ${reminderType}`);
+    
+    const response = await axios.post(
+      `${API_URL}/send`, 
       { petId, reminderType },
       {
         headers: {
@@ -35,6 +38,7 @@ export const sendVaccinationReminder = async (petId, reminderType = 'email') => 
       }
     );
     
+    console.log('Réponse du serveur après envoi:', response.data);
     return response.data;
   } catch (error) {
     console.error('Erreur d\'envoi de rappel :', error.response?.data || error.message);

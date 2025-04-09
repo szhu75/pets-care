@@ -43,9 +43,10 @@ const VaccinationReminders = () => {
       setSuccessMessage('');
       setError(null);
       
-      await sendVaccinationReminder(petId, 'email');
+      console.log('Envoi d\'un rappel pour l\'animal ID:', petId);
+      const response = await sendVaccinationReminder(petId, 'email');
       
-      setSuccessMessage('Rappel envoyé avec succès!');
+      setSuccessMessage('Rappel envoyé avec succès! Vérifiez votre email.');
       
       // Rafraîchir les données
       fetchData();
@@ -55,6 +56,7 @@ const VaccinationReminders = () => {
         setSuccessMessage('');
       }, 3000);
     } catch (err) {
+      console.error('Erreur lors de l\'envoi du rappel:', err);
       setError(err.response?.data?.message || 'Erreur lors de l\'envoi du rappel');
     }
   };
