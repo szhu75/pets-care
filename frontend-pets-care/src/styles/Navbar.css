@@ -1,148 +1,165 @@
 /* Styles de base pour la Navbar */
 .navbar {
-    background-color: #ffffff;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Logo et Nom */
+.navbar-logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 50px; /* Taille ajustée */
+  margin-right: 10px; /* Espace entre le logo et le texte */
+  border-radius: 8px; /* Optionnel : arrondir légèrement les coins */
+}
+
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* Menu Navigation */
+.navbar-menu {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-item {
+  margin: 0 1rem;
+}
+
+.navbar-link {
+  color: #2c3e50;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.navbar-link:hover {
+  color: #3498db;
+}
+
+/* Authentification : Connexion et Inscription */
+.navbar-auth {
+  display: flex;
+  align-items: center;
+}
+
+.btn-login, .btn-register {
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-login {
+  color: #3498db;
+  border: 1px solid #3498db;
+}
+
+.btn-register {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-login:hover {
+  background-color: #f0f0f0;
+}
+
+.btn-register:hover {
+  background-color: #2980b9;
+}
+
+/* Mobile Menu Toggle */
+.navbar-mobile-toggle {
+  display: none;
+  cursor: pointer;
+}
+
+.hamburger {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: #2c3e50;
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.hamburger::before,
+.hamburger::after {
+  content: '';
+  position: absolute;
+  width: 25px;
+  height: 3px;
+  background-color: #2c3e50;
+  transition: transform 0.3s ease;
+}
+
+.hamburger::before {
+  top: -8px;
+}
+
+.hamburger::after {
+  bottom: -8px;
+}
+
+/* Mobile Menu */
+@media (max-width: 768px) {
+  .navbar-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 1rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    text-align: center;
   }
-  
-  .navbar-container {
+
+  .navbar-menu.active {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
   }
-  
-  .navbar-logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #2c3e50;
-    text-decoration: none;
-  }
-  
-  .navbar-menu {
-    display: flex;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-  
+
   .navbar-item {
-    margin: 0 1rem;
+    margin: 1rem;
   }
-  
-  .navbar-link {
-    color: #2c3e50;
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-  
-  .navbar-link:hover {
-    color: #3498db;
-  }
-  
-  .navbar-auth {
-    display: flex;
-    align-items: center;
-  }
-  
-  .btn-login, .btn-register {
-    margin-left: 1rem;
-    padding: 0.5rem 1rem;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .btn-login {
-    color: #3498db;
-    border: 1px solid #3498db;
-  }
-  
-  .btn-register {
-    background-color: #3498db;
-    color: white;
-  }
-  
-  .btn-login:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .btn-register:hover {
-    background-color: #2980b9;
-  }
-  
-  /* Styles pour le menu mobile */
+
   .navbar-mobile-toggle {
-    display: none;
-    cursor: pointer;
-  }
-  
-  .hamburger {
     display: block;
-    width: 25px;
-    height: 3px;
-    background-color: #2c3e50;
-    position: relative;
-    transition: background-color 0.3s ease;
   }
-  
-  .hamburger::before,
-  .hamburger::after {
-    content: '';
-    position: absolute;
-    width: 25px;
-    height: 3px;
-    background-color: #2c3e50;
-    transition: transform 0.3s ease;
+
+  .navbar-auth {
+    flex-direction: column;
+    width: 100%;
   }
-  
-  .hamburger::before {
-    top: -8px;
+
+  .btn-login, .btn-register {
+    margin: 0.5rem 0;
+    width: 100%;
+    text-align: center;
   }
-  
-  .hamburger::after {
-    bottom: -8px;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .navbar-menu {
-      display: none;
-      flex-direction: column;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      background-color: white;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-  
-    .navbar-menu.active {
-      display: flex;
-    }
-  
-    .navbar-item {
-      margin: 1rem;
-      text-align: center;
-    }
-  
-    .navbar-mobile-toggle {
-      display: block;
-    }
-  
-    .navbar-auth {
-      flex-direction: column;
-      width: 100%;
-    }
-  
-    .btn-login, .btn-register {
-      margin: 0.5rem 0;
-      width: 100%;
-      text-align: center;
-    }
-  }
+}

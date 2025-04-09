@@ -9,11 +9,21 @@ const Home = () => {
     <div className="home-page">
       <Navbar />
       <main className="home-container">
+      
+
+        {/* Section Hero */}
         <div className="home-hero">
-          <h1 className="home-hero-title fade-in">Pets Care</h1>
+          <h1 className="home-hero-title fade-in">Bienvenue sur PetsCare</h1>
           <p className="home-hero-subtitle fade-in">Votre partenaire de confiance pour la santé de vos animaux</p>
+          <p className="home-intro-text">
+            L'application qui permet de gérer la santé de nos amis à quatre pattes !
+          </p>
+          <p className="home-intro-text">
+            Notre application vous aide à prendre soin de vos animaux de compagnie en offrant divers services.
+          </p>
         </div>
-        
+
+        {/* Nos Services */}
         <div className="home-services">
           <h2>Nos Services Essentiels</h2>
           <div className="home-services-grid">
@@ -34,7 +44,8 @@ const Home = () => {
             </div>
           </div>
         </div>
-        
+
+        {/* Témoignages */}
         <div className="home-testimonials">
           <h2>Témoignages de nos clients</h2>
           <div className="home-testimonial-grid">
@@ -54,7 +65,8 @@ const Home = () => {
             </div>
           </div>
         </div>
-        
+
+        {/* Call-to-Action */}
         <div className="home-cta">
           <h2>Votre animal mérite le meilleur</h2>
           <p>Rejoignez notre communauté et offrez une santé optimale à votre compagnon</p>

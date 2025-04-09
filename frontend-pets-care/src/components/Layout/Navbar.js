@@ -11,9 +11,13 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo">
-          Pets Care
-        </Link>
+        {/* Logo + Nom de l'application */}
+        <div className="navbar-logo-container">
+          <img src="/images/logo-2-entier.jpg" alt="PetsCare Logo" className="logo" />
+          <Link to="/" className="navbar-logo">
+            PetsCare
+          </Link>
+        </div>
 
         {/* Mobile Menu Toggle */}
         <div className="navbar-mobile-toggle" onClick={toggleMenu}>

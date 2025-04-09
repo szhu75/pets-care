@@ -52,7 +52,7 @@ const Footer = () => {
 
         {/* Copyright */}
         <div className="footer-bottom">
-          <p>&copy; 2024 Pets Care. Tous droits réservés.</p>
+          <p>&copy; 2025 PetsCare. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

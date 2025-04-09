@@ -10,6 +10,7 @@ import Register from './pages/Register';
 import AppointmentForm from './pages/Appointments';
 import Dashboard from './pages/Dashboard';
 import AdminDashboard from './pages/AdminDashboard';
+import Contact from './pages/Contact';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/appointment" element={<AppointmentForm />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/admindashboard" element={<AdminDashboard />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </div>
     </Router>
