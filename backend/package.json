@@ -28,9 +28,12 @@
     "sequelize": "^6.37.6"
   },
   "devDependencies": {
+    "chai": "^5.2.0",
     "eslint": "^9.23.0",
     "jest": "^29.7.0",
+    "mocha": "^11.1.0",
     "nodemon": "^3.1.9",
+    "sinon": "^20.0.0",
     "supertest": "^7.1.0"
   },
   "jest": {
