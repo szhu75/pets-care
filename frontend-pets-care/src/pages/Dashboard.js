@@ -5,9 +5,13 @@ import PetRegistration from '../components/Pet/PetRegistration';
 import PetUpdateForm from '../components/Pet/PetUpdateForm';
 import AppointmentForm from '../components/Appointment/AppointmentForm';
 import VaccinationRemindersSection from '../components/Dashboard/VaccinationRemindersSection';
+import PassportButton from '../components/Pet/PassportButton';
+import VaccinationForm from '../components/Pet/VaccinationForm';
+import VaccinationList from '../components/Pet/VaccinationList';
 import Navbar from '../components/Layout/Navbar';
 import Footer from '../components/Layout/Footer';
 import '../styles/index.css';
+import '../styles/PetCard.css';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -16,6 +20,8 @@ const Dashboard = () => {
   const [showPetForm, setShowPetForm] = useState(false);
   const [showAppointmentForm, setShowAppointmentForm] = useState(false);
   const [selectedPetForUpdate, setSelectedPetForUpdate] = useState(null);
+  const [selectedPetForVaccination, setSelectedPetForVaccination] = useState(null);
+  const [showVaccinationForm, setShowVaccinationForm] = useState(false);
 
   // Fonction de formatage de l'âge
   const formatAge = (age) => {
@@ -116,6 +122,13 @@ const Dashboard = () => {
     }
   };
 
+  const handleVaccinationAdded = () => {
+    // Fermer le formulaire après l'ajout
+    setShowVaccinationForm(false);
+    // Recharger les données des animaux
+    fetchPets();
+  };
+
   // Si l'utilisateur n'est pas encore chargé
   if (!user) {
     return <div>Chargement...</div>;
@@ -164,12 +177,20 @@ const Dashboard = () => {
             ) : (
               <div className="dashboard-pets-list">
                 {pets.map(pet => (
-                  <div key={pet.id} className="dashboard-pet-item">
+                  <div key={pet.id} className="dashboard-pet-item pet-card">
                     {selectedPetForUpdate === pet.id ? (
                       <PetUpdateForm 
                         petId={pet.id}
                         onPetUpdated={handlePetUpdate}
                         onCancel={() => setSelectedPetForUpdate(null)}
+                      />
+                    ) : selectedPetForVaccination === pet.id && showVaccinationForm ? (
+                      <VaccinationForm
+                        petId={pet.id}
+                        onVaccinationAdded={handleVaccinationAdded}
+                        onCancel={() => {
+                          setShowVaccinationForm(false);
+                        }}
                       />
                     ) : (
                       <>
@@ -179,18 +200,52 @@ const Dashboard = () => {
                           <span>Âge : {formatAge(pet.age)}</span>
                           <span>Dernier vaccin : {pet.lastVaccination ? new Date(pet.lastVaccination).toLocaleDateString('fr-FR') : 'Non renseigné'}</span>
                         </div>
-                        <div className="dashboard-pet-actions">
+
+                        {/* Section vaccinations uniquement si l'animal est sélectionné */}
+                        {selectedPetForVaccination === pet.id && !showVaccinationForm && (
+                          <div className="pet-vaccinations-section">
+                            <VaccinationList 
+                              petId={pet.id} 
+                              onVaccinationDeleted={fetchPets}
+                            />
+                            <button 
+                              onClick={() => setShowVaccinationForm(true)}
+                              className="add-vaccination-btn"
+                            >
+                              <i className="fas fa-plus"></i> Ajouter une vaccination
+                            </button>
+                          </div>
+                        )}
+
+                        <div className="dashboard-pet-actions pet-actions">
+                          <PassportButton petId={pet.id} />
+
+                          <button 
+                            onClick={() => {
+                              if (selectedPetForVaccination === pet.id) {
+                                setSelectedPetForVaccination(null);
+                              } else {
+                                setSelectedPetForVaccination(pet.id);
+                                setShowVaccinationForm(false);
+                              }
+                            }}
+                            className="vaccination-btn"
+                          >
+                            <i className="fas fa-syringe"></i> {selectedPetForVaccination === pet.id ? "Masquer vaccins" : "Voir vaccins"}
+                          </button>
+
                           <button 
                             onClick={() => setSelectedPetForUpdate(pet.id)}
-                            className="dashboard-modify-button"
+                            className="update-btn"
                           >
-                            Modifier
+                            <i className="fas fa-edit"></i> Modifier
                           </button>
+                          
                           <button 
                             onClick={() => handlePetDelete(pet.id)}
-                            className="dashboard-delete-button"
+                            className="delete-btn"
                           >
-                            Supprimer
+                            <i className="fas fa-trash"></i> Supprimer
                           </button>
                         </div>
                       </>
@@ -231,7 +286,7 @@ const Dashboard = () => {
                       <span>{appointment.type}</span>
                     </div>
                     <div>
-                      <span>{new Date(appointment.date).toLocaleDateString('fr-FR')} à {appointment.time}</span><br></br>
+                      <span>{new Date(appointment.date).toLocaleDateString('fr-FR')} à {appointment.time}</span><br />
                       <span className={`
                         inline-block ml-2 px-2 py-1 rounded-full text-xs
                         ${appointment.status === 'En cours' ? 'bg-blue-100 text-blue-800' : 

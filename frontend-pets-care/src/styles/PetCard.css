@@ -1,0 +1,127 @@
+/* Styles améliorés pour les cartes d'animaux */
+.pet-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+  }
+  
+  .pet-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .pet-details {
+    margin-bottom: 20px;
+  }
+  
+  .pet-details h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #1e3a8a;
+  }
+  
+  .pet-details p {
+    margin: 8px 0;
+    color: #4b5563;
+  }
+  
+  .pet-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+  }
+  
+  .update-btn,
+  .delete-btn,
+  .vaccination-btn {
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+  }
+  
+  .update-btn {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+  }
+  
+  .update-btn:hover {
+    background-color: #2563eb;
+    transform: translateY(-2px);
+  }
+  
+  .delete-btn {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+  }
+  
+  .delete-btn:hover {
+    background-color: #dc2626;
+    transform: translateY(-2px);
+  }
+  
+  .vaccination-btn {
+    background-color: #10b981;
+    color: white;
+    border: none;
+  }
+  
+  .vaccination-btn:hover {
+    background-color: #059669;
+    transform: translateY(-2px);
+  }
+  
+  /* Styles pour la section des vaccinations */
+  .pet-vaccinations-section {
+    background-color: #f9fafb;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+    border: 1px solid #e5e7eb;
+  }
+  
+  .add-vaccination-btn {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 15px;
+    transition: all 0.2s ease;
+  }
+  
+  .add-vaccination-btn:hover {
+    background-color: #059669;
+    transform: translateY(-2px);
+  }
+  
+  /* Responsive */
+  @media (max-width: 640px) {
+    .pet-actions {
+      flex-direction: column;
+    }
+    
+    .update-btn,
+    .delete-btn,
+    .vaccination-btn,
+    .passport-button {
+      width: 100%;
+      justify-content: center;
+    }
+  }

@@ -1,0 +1,126 @@
+/* Styles pour le formulaire d'ajout de vaccination */
+.vaccination-form-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .vaccination-form-container h3 {
+    color: #1e3a8a;
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+  
+  .vaccination-error {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+  }
+  
+  .vaccination-success {
+    background-color: #d1fae5;
+    color: #065f46;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+  }
+  
+  .vaccination-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .vaccination-form .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .vaccination-form label {
+    font-weight: 600;
+    color: #4b5563;
+    margin-bottom: 5px;
+  }
+  
+  .vaccination-form input,
+  .vaccination-form textarea {
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 90%;
+  }
+  
+  .vaccination-form input:focus,
+  .vaccination-form textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  }
+  
+  .vaccination-form .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 5px;
+  }
+  
+  .vaccination-form .submit-btn {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+  }
+  
+  .vaccination-form .submit-btn:hover {
+    background-color: #2563eb;
+    transform: translateY(-2px);
+  }
+  
+  .vaccination-form .submit-btn:disabled {
+    background-color: #93c5fd;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  .vaccination-form .cancel-btn {
+    background-color: #f3f4f6;
+    color: #4b5563;
+    border: 1px solid #d1d5db;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .vaccination-form .cancel-btn:hover {
+    background-color: #e5e7eb;
+  }
+  
+  .vaccination-form .cancel-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  
+  /* Responsive */
+  @media (max-width: 640px) {
+    .vaccination-form .form-actions {
+      flex-direction: column;
+    }
+    
+    .vaccination-form .submit-btn,
+    .vaccination-form .cancel-btn {
+      width: 100%;
+    }
+  }

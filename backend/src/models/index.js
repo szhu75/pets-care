@@ -6,6 +6,7 @@ const User = require('./User');
 const Pet = require('./Pet');
 const Appointment = require('./Appointment');
 const Reminder = require('./Reminder');
+const Vaccination = require('./Vaccination');
 
 // Définir les associations
 User.hasMany(Pet, {
@@ -28,6 +29,17 @@ Pet.hasMany(Reminder, {
   as: 'reminders'
 });
 
+// Associations pour les vaccinations
+Pet.hasMany(Vaccination, {
+  foreignKey: 'petId',
+  as: 'vaccinations'
+});
+
+Vaccination.belongsTo(Pet, {
+  foreignKey: 'petId',
+  onDelete: 'CASCADE'
+});
+
 // Exporter les modèles
 module.exports = {
   sequelize,
@@ -35,5 +47,6 @@ module.exports = {
   User,
   Pet,
   Appointment,
-  Reminder
+  Reminder,
+  Vaccination
 };

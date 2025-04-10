@@ -5,11 +5,13 @@ import {
   getAllPets
 } from '../services/adminService';
 import { getPetsNeedingVaccineReminders } from '../services/reminderService';
+import { getPetPassport } from '../services/vaccinationService';
 
 // Importation des composants
 import Navbar from '../components/Layout/Navbar';
 import Footer from '../components/Layout/Footer';
 import VaccinationReminders from '../components/Admin/VaccinationReminders';
+import PetPassport from '../components/Pet/PetPassport';
 import '../styles/AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -20,11 +22,14 @@ const AdminDashboard = () => {
     pendingAppointments: 0,
     totalPets: 0,
     totalUsers: 0,
-    petsNeedingVaccination: 0  // Nouvelle statistique
+    petsNeedingVaccination: 0
   });
-  const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, appointments, pets, reminders
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedPetId, setSelectedPetId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterType, setFilterType] = useState('all');
 
   useEffect(() => {
     fetchAdminData();
@@ -97,6 +102,13 @@ const AdminDashboard = () => {
     return `${years} ans et ${months} mois`;
   };
 
+  // Filtrer les animaux selon la recherche et le filtre
+  const filteredPets = pets.filter(pet => {
+    const nameMatch = pet.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const typeMatch = filterType === 'all' || pet.type === filterType;
+    return nameMatch && typeMatch;
+  });
+
   if (loading) {
     return (
       <div className="admin-dashboard-container">
@@ -119,6 +131,25 @@ const AdminDashboard = () => {
           <button onClick={fetchAdminData} className="retry-btn">
             Réessayer
           </button>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Si un animal est sélectionné, afficher son passeport
+  if (selectedPetId) {
+    return (
+      <div className="admin-dashboard-container">
+        <Navbar />
+        <div className="admin-passport-section">
+          <button 
+            onClick={() => setSelectedPetId(null)}
+            className="back-btn"
+          >
+            <i className="fas fa-arrow-left"></i> Retour à la liste
+          </button>
+          <PetPassport petId={selectedPetId} />
         </div>
         <Footer />
       </div>
@@ -284,10 +315,16 @@ const AdminDashboard = () => {
           <div className="admin-search-filter">
             <input 
               type="text" 
-              placeholder="Rechercher..." 
-              className="admin-search-input" 
+              placeholder="Rechercher un animal..." 
+              className="admin-search-input"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <select className="admin-filter-select">
+            <select 
+              className="admin-filter-select"
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+            >
               <option value="all">Tous les types</option>
               <option value="Chien">Chiens</option>
               <option value="Chat">Chats</option>
@@ -296,8 +333,8 @@ const AdminDashboard = () => {
               <option value="Autre">Autres</option>
             </select>
           </div>
-          {pets.length === 0 ? (
-            <p>Aucun animal enregistré</p>
+          {filteredPets.length === 0 ? (
+            <p>Aucun animal correspondant aux critères</p>
           ) : (
             <table className="admin-pets-table">
               <thead>
@@ -308,12 +345,12 @@ const AdminDashboard = () => {
                   <th>Propriétaire</th>
                   <th>Âge</th>
                   <th>Genre</th>
-                  <th>Poids</th>
                   <th>Dernier Vaccin</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {pets.map((pet) => (
+                {filteredPets.map((pet) => (
                   <tr key={pet.id}>
                     <td>{pet.name}</td>
                     <td>{pet.type}</td>
@@ -321,8 +358,16 @@ const AdminDashboard = () => {
                     <td>{pet.User?.firstName || 'N/A'} {pet.User?.lastName || ''}</td>
                     <td>{formatAge(pet.age)}</td>
                     <td>{pet.gender || 'Non renseigné'}</td>
-                    <td>{pet.weight ? `${pet.weight} kg` : 'Non renseigné'}</td>
                     <td>{pet.lastVaccination ? formatDate(pet.lastVaccination) : 'Non renseigné'}</td>
+                    <td>
+                      <button 
+                        onClick={() => setSelectedPetId(pet.id)}
+                        className="pet-details-btn"
+                        title="Voir le passeport de l'animal"
+                      >
+                        <i className="fas fa-passport"></i> Détails
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>

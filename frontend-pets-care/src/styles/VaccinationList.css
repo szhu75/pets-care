@@ -1,0 +1,158 @@
+/* Styles pour la liste des vaccinations */
+.vaccination-list-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .vaccination-list-container h3 {
+    color: #1e3a8a;
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+  
+  .vaccination-loading {
+    padding: 15px;
+    text-align: center;
+    color: #6b7280;
+  }
+  
+  .vaccination-error {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+  }
+  
+  .no-vaccinations {
+    padding: 20px;
+    text-align: center;
+    color: #6b7280;
+    background-color: #f9fafb;
+    border-radius: 8px;
+    font-style: italic;
+  }
+  
+  .vaccination-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .vaccination-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+  
+  .vaccination-item:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+    border-color: #d1d5db;
+  }
+  
+  .vaccination-details {
+    flex: 1;
+  }
+  
+  .vaccination-details h4 {
+    color: #111827;
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+  }
+  
+  .vaccination-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .vaccination-date,
+  .vaccination-expiry,
+  .vaccination-vet {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #4b5563;
+    font-size: 0.9rem;
+  }
+  
+  .vaccination-expiry.valid {
+    color: #059669;
+  }
+  
+  .vaccination-expiry.warning {
+    color: #d97706;
+  }
+  
+  .vaccination-expiry.expired {
+    color: #dc2626;
+  }
+  
+  .vaccination-expiry.unknown {
+    color: #6b7280;
+  }
+  
+  .vaccination-notes {
+    background-color: #f9fafb;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #4b5563;
+    margin-top: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .vaccination-notes i {
+    margin-top: 3px;
+  }
+  
+  .vaccination-actions {
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .delete-btn {
+    background-color: transparent;
+    color: #ef4444;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .delete-btn:hover {
+    background-color: #fee2e2;
+  }
+  
+  /* Responsive */
+  @media (max-width: 640px) {
+    .vaccination-info {
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .vaccination-item {
+      flex-direction: column;
+    }
+    
+    .vaccination-actions {
+      align-self: flex-end;
+      margin-top: 10px;
+    }
+  }

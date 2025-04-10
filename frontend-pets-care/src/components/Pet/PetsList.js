@@ -4,6 +4,8 @@ import PetUpdateForm from './PetUpdateForm';
 
 const PetsList = ({ pets, onPetDeleted, onPetUpdated }) => {
   const [selectedPetForUpdate, setSelectedPetForUpdate] = useState(null);
+  const [selectedPetForVaccination, setSelectedPetForVaccination] = useState(null);
+  const [showVaccinationForm, setShowVaccinationForm] = useState(false);
 
   const handleDeletePet = async (petId) => {
     const confirmDelete = window.confirm('Êtes-vous sûr de vouloir supprimer cet animal ? Cette action est irréversible.');
@@ -30,6 +32,16 @@ const PetsList = ({ pets, onPetDeleted, onPetUpdated }) => {
     setSelectedPetForUpdate(null);
   };
 
+  const handleVaccinationAdded = () => {
+    // Fermer le formulaire après l'ajout
+    setShowVaccinationForm(false);
+    
+    // Déclencher une mise à jour si nécessaire
+    if (onPetUpdated) {
+      onPetUpdated();
+    }
+  };
+
   // Fonction pour calculer l'âge en années ou mois
   const formatAge = (age) => {
     if (age === null) return 'Non renseigné';
@@ -51,6 +63,15 @@ const PetsList = ({ pets, onPetDeleted, onPetUpdated }) => {
               onPetUpdated={handleUpdatePet}
               onCancel={() => setSelectedPetForUpdate(null)}
             />
+          ) : selectedPetForVaccination === pet.id && showVaccinationForm ? (
+            <VaccinationForm
+              petId={pet.id}
+              onVaccinationAdded={handleVaccinationAdded}
+              onCancel={() => {
+                setSelectedPetForVaccination(null);
+                setShowVaccinationForm(false);
+              }}
+            />
           ) : (
             <>
               <div className="pet-details">
@@ -64,13 +85,49 @@ const PetsList = ({ pets, onPetDeleted, onPetUpdated }) => {
                   <p>Dernière vaccination : {new Date(pet.lastVaccination).toLocaleDateString()}</p>
                 )}
               </div>
+
+              {/* Section vaccinations uniquement si l'animal est sélectionné */}
+              {selectedPetForVaccination === pet.id && !showVaccinationForm && (
+                <div className="pet-vaccinations-section">
+                  <VaccinationList 
+                    petId={pet.id} 
+                    onVaccinationDeleted={() => {
+                      if (onPetUpdated) onPetUpdated();
+                    }}
+                  />
+                  <button 
+                    onClick={() => setShowVaccinationForm(true)}
+                    className="add-vaccination-btn"
+                  >
+                    <i className="fas fa-plus"></i> Ajouter une vaccination
+                  </button>
+                </div>
+              )}
+
               <div className="pet-actions">
+                <PassportButton petId={pet.id} />
+
+                <button 
+                  onClick={() => {
+                    if (selectedPetForVaccination === pet.id) {
+                      setSelectedPetForVaccination(null);
+                    } else {
+                      setSelectedPetForVaccination(pet.id);
+                      setShowVaccinationForm(false);
+                    }
+                  }}
+                  className="vaccination-btn"
+                >
+                  {selectedPetForVaccination === pet.id ? "Masquer vaccins" : "Voir vaccins"}
+                </button>
+
                 <button 
                   onClick={() => setSelectedPetForUpdate(pet.id)}
                   className="update-btn"
                 >
                   Modifier
                 </button>
+                
                 <button 
                   onClick={() => handleDeletePet(pet.id)}
                   className="delete-btn"
@@ -85,5 +142,3 @@ const PetsList = ({ pets, onPetDeleted, onPetUpdated }) => {
     </div>
   );
 };
-
-export default PetsList;

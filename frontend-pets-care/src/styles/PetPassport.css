@@ -1,0 +1,229 @@
+/* Styles pour le passeport animal */
+.passport-container {
+    position: relative;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    margin: 20px auto;
+    max-width: 800px;
+    overflow: hidden;
+  }
+  
+  .passport-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #3b82f6;
+    color: white;
+    padding: 15px 20px;
+  }
+  
+  .passport-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  .passport-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .print-btn, .close-btn {
+    background-color: white;
+    color: #3b82f6;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+  
+  .print-btn:hover {
+    background-color: #f0f9ff;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .close-btn {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+  }
+  
+  .close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .passport-content {
+    padding: 20px;
+  }
+  
+  .passport-title {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+  }
+  
+  .passport-title h1 {
+    color: #1e3a8a;
+    font-size: 2.5rem;
+    margin: 0;
+    padding: 15px 0;
+    border-bottom: 2px solid #e5e7eb;
+  }
+  
+  .passport-logo {
+    font-size: 1.2rem;
+    color: #6b7280;
+    margin-top: 5px;
+  }
+  
+  .passport-section {
+    margin-bottom: 30px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+  }
+  
+  .passport-section h3 {
+    background-color: #f3f4f6;
+    color: #374151;
+    margin: 0;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 1.2rem;
+  }
+  
+  .passport-details {
+    padding: 15px 20px;
+  }
+  
+  .passport-details-row {
+    display: flex;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed #e5e7eb;
+  }
+  
+  .passport-details-row:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  
+  .detail-label {
+    flex: 0 0 150px;
+    font-weight: 600;
+    color: #4b5563;
+  }
+  
+  .detail-value {
+    flex: 1;
+    color: #1f2937;
+  }
+  
+  .no-vaccinations {
+    padding: 20px;
+    text-align: center;
+    color: #6b7280;
+    font-style: italic;
+  }
+  
+  .vaccinations-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .vaccinations-table th,
+  .vaccinations-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .vaccinations-table th {
+    background-color: #f3f4f6;
+    color: #374151;
+    font-weight: 600;
+  }
+  
+  .vaccinations-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .vaccinations-table tr:hover td {
+    background-color: #f9fafb;
+  }
+  
+  .medical-notes {
+    padding: 15px 20px;
+    white-space: pre-line;
+    color: #4b5563;
+    background-color: #f9fafb;
+    border-radius: 6px;
+    line-height: 1.6;
+  }
+  
+  .passport-footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+    color: #6b7280;
+    font-size: 0.9rem;
+  }
+  
+  /* Styles pour l'impression */
+  @media print {
+    body, html {
+      background-color: white !important;
+    }
+    
+    .passport-container {
+      box-shadow: none;
+      margin: 0 !important;
+      max-width: 100%;
+    }
+    
+    .passport-header, 
+    .passport-actions,
+    button {
+      display: none !important;
+    }
+    
+    .passport-title h1 {
+      color: #000 !important;
+    }
+    
+    .passport-section {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      border: 1px solid #ddd;
+    }
+    
+    .passport-footer {
+      color: #666;
+    }
+  }
+  
+  /* Loader et messages d'erreur */
+  .passport-loading,
+  .passport-error {
+    padding: 30px;
+    text-align: center;
+    border-radius: 8px;
+  }
+  
+  .passport-loading {
+    background-color: #f3f4f6;
+    color: #4b5563;
+  }
+  
+  .passport-error {
+    background-color: #fee2e2;
+    color: #b91c1c;
+  }
