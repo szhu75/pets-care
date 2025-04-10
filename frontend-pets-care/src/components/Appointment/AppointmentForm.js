@@ -87,9 +87,7 @@ const AppointmentForm = ({ onClose }) => {
       // Préparer les données pour l'envoi
       const appointmentData = {
         petId: formData.petId,
-        type: Object.keys(appointmentTypes).find(
-          key => appointmentTypes[key] === formData.appointmentType
-        ),
+        type: formData.appointmentType,
         date: formData.date,
         time: formData.time,
         notes: formData.notes

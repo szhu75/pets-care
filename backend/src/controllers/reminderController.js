@@ -40,6 +40,8 @@ exports.getPetsNeedingVaccineReminders = async (req, res) => {
   }
 };
 
+// src/controllers/reminderController.js - Fonction modifiée
+
 exports.sendVaccinationReminder = async (req, res) => {
   try {
     const { petId, reminderType = 'email' } = req.body;
@@ -88,29 +90,28 @@ exports.sendVaccinationReminder = async (req, res) => {
     });
 
     // Préparer le contenu du message pour EmailJS
-// Préparer le contenu du message pour EmailJS
-const emailData = {
-  service_id: 'service_petscare',
-  template_id: 'template_o0k79xp',
-  user_id: process.env.EMAILJS_USER_ID,
-  template_params: {
-    to_name: `${pet.User.firstName} ${pet.User.lastName}`,
-    to_email: 'sophiezhu.pro@gmail.com', // Email destinataire
-    pet_name: pet.name,
-    expiration_date: formattedExpiration,
-    pet_type: pet.type,
-    email: 'contact@petscare.com' // Email de réponse
-  }
-};
+    const emailData = {
+      service_id: 'service_petscare', // Votre Service ID
+      template_id: 'template_o0k79xp', // Votre Template ID
+      user_id: process.env.EMAILJS_USER_ID || 'crTVa-NPrJOAzLUtq', // Votre User ID
+      template_params: {
+        to_name: `${pet.User.firstName} ${pet.User.lastName}`,
+        to_email: pet.User.email || 'sophiezhu.pro@gmail.com', // Utiliser l'email de test si l'email de l'utilisateur n'est pas disponible
+        pet_name: pet.name,
+        pet_type: pet.type,
+        expiration_date: formattedExpiration,
+        email: pet.User.email || 'sophiezhu.pro@gmail.com', // Pour le champ Reply To
+      }
+    };
 
-    // Préparer le contenu du message pour l'enregistrement
+    // Préparer le contenu du message pour l'enregistrement dans la base de données
     const reminderContent = `Bonjour ${pet.User.firstName} ${pet.User.lastName},
 
 Nous espérons que vous et ${pet.name} allez bien.
 
 Nous vous contactons pour vous rappeler que le vaccin de ${pet.name} arrive à expiration le ${formattedExpiration}.
 
-Pour assurer la santé et le bien-être de votre animal, nous vous recommandons de prendre rendez-vous pour un rappel de vaccination.
+Pour assurer la santé et le bien-être de votre ${pet.type}, nous vous recommandons de prendre rendez-vous pour un rappel de vaccination.
 
 Vous pouvez prendre rendez-vous facilement en vous connectant à votre compte PetsCare ou en nous appelant au 01 23 45 67 89.
 
@@ -127,22 +128,22 @@ L'équipe PetsCare`;
       content: reminderContent
     });
 
-// Envoyer l'email avec EmailJS via leur API
-if (reminderType === 'email' && pet.User.email) {
-  try {
-    const response = await axios.post('https://api.emailjs.com/api/v1.0/email/send', emailData, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-EmailJS-Public-Key': process.env.EMAILJS_PUBLIC_KEY || 'crTVa-NPrJOAzLUtq'
+    // Envoyer l'email avec EmailJS via leur API
+    if (reminderType === 'email') {
+      try {
+        const response = await axios.post('https://api.emailjs.com/api/v1.0/email/send', emailData, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        console.log('Email envoyé avec succès via EmailJS');
+      } catch (emailError) {
+        console.error('Erreur d\'envoi d\'email via EmailJS:', emailError.response?.data || emailError.message);
+        // Mettre à jour le statut du rappel en cas d'erreur, mais continuer
+        await reminder.update({ status: 'erreur' });
       }
-    });
-    
-    console.log('Email envoyé avec succès via EmailJS');
-  } catch (emailError) {
-    console.error('Erreur d\'envoi d\'email via EmailJS:', emailError.response?.data || emailError.message);
-    // Continuons même si l'email échoue, car nous avons déjà créé l'entrée dans la base de données
-  }
-}
+    }
 
     res.status(200).json({
       message: 'Rappel de vaccination envoyé avec succès',

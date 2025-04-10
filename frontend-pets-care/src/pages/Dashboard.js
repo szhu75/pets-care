@@ -231,7 +231,7 @@ const Dashboard = () => {
                       <span>{appointment.type}</span>
                     </div>
                     <div>
-                      <span>{new Date(appointment.date).toLocaleDateString('fr-FR')} à {appointment.time}</span>
+                      <span>{new Date(appointment.date).toLocaleDateString('fr-FR')} à {appointment.time}</span><br></br>
                       <span className={`
                         inline-block ml-2 px-2 py-1 rounded-full text-xs
                         ${appointment.status === 'En cours' ? 'bg-blue-100 text-blue-800' : 

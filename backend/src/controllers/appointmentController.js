@@ -76,7 +76,6 @@ exports.createAppointment = async (req, res) => {
       date,
       time,
       notes: notes || null,
-      status: 'En cours'
     });
 
     res.status(201).json({

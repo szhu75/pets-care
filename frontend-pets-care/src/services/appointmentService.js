@@ -10,13 +10,6 @@ const typeMapping = {
   'emergency': 'Urgence'
 };
 
-const reverseTypeMapping = {
-  'Contrôle de santé': 'health_check',
-  'Vaccination': 'vaccination',
-  'Consultation': 'consultation',
-  'Urgence': 'emergency'
-};
-
 const statusMapping = {
   'pending': 'En cours',
   'confirmed': 'Confirmé',
@@ -24,17 +17,13 @@ const statusMapping = {
   'cancelled': 'Annulé'
 };
 
-
 // Fonction pour créer un rendez-vous
 export const createAppointment = async (appointmentData) => {
   try {
     const token = localStorage.getItem('token');
     
-    // Convertir le type pour le backend
-    const convertedData = {
-      ...appointmentData,
-      type: reverseTypeMapping[appointmentData.type] || appointmentData.type
-    };
+    // Utiliser directement appointmentData sans faire de mapping supplémentaire
+    const convertedData = { ...appointmentData };  
 
     const response = await axios.post(`${API_URL}/create`, 
       convertedData,
